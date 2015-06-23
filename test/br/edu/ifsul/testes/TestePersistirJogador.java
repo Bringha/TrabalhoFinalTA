@@ -48,11 +48,14 @@ public class TestePersistirJogador {
             Jogador obj = new Jogador();
             obj.setNome("Felipe Bastos");
             obj.setAtivo(true);
-            obj.setDataNascimento(Calendar.getInstance());
-            obj.setPartidasJogadas(3);
-            obj.setGolsMarcados(1);
-            obj.setCartoesAmarelos(1);
-            obj.setCartoesVermelhos(0);
+            obj.setNascimento(Calendar.getInstance());
+            obj.setNroPartidas(30);
+            obj.setNroGols(1);
+            obj.setCartoesAmarelos(7);
+            obj.setCartoesVermelhos(3);
+            em.getTransaction().begin();
+            em.persist(obj);
+            em.getTransaction().commit();
         }catch(Exception e){
             exception = true;
             e.printStackTrace();

@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.edu.ifsul.modelo;
+
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -13,6 +9,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  *
  * @author bringha
@@ -20,13 +22,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "usuario")
 public class Usuario extends Pessoa implements Serializable{
-    @Length(max = 50, message = "O apelido não deve ultrapassar {max} caracteres")
+    @Length(min = 6, max = 15, message = "O apelido deve ter entre {min} e {max} caracteres")
     @NotEmpty(message = "O apelido não pode ser nulo")
-    @Column(name = "apelido", length = 50, nullable = false)
+    @Column(name = "apelido", length = 15, nullable = false)
     private String apelido;
-    @Length(max = 50, message = "A senha não deve ultrapassar {max} caracteres")
+    @Length(min = 8, max = 30, message = "A senha deve ter entre {min} e {max} caracteres")
     @NotEmpty(message = "A senha não pode ser nula")
-    @Column(name = "senha", length = 50, nullable = false)
+    @Column(name = "senha", length = 30, nullable = false)
     private String senha;
     @NotNull(message = "Deve ser informado se é administrador")
     @Column(name = "administrador", nullable = false)

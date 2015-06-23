@@ -9,10 +9,13 @@ import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -21,44 +24,44 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "jogador")
 public class Jogador extends Pessoa implements Serializable{
-    @NotNull(message = "A data de nascimento deve ser informada")
+    @NotNull(message = "O nascimento deve ser informado")
     @Temporal(TemporalType.DATE)
-    @Column(name = "dataNascimento", nullable = false)
-    private Calendar dataNascimento;
-    @Column(name = "partidasJogadas")
-    private Integer partidasJogadas;
-    @Column(name = "golsMarcados")
-    private Integer golsMarcados;
-    @Column(name = "cartoesAmarelos")
+    @Column(name = "nascimento", nullable = false)
+    private Calendar nascimento;
+    @Column(name = "nro_partidas")
+    private Integer nroPartidas;
+    @Column(name = "nro_gols")
+    private Integer nroGols;
+    @Column(name = "amarelos")
     private Integer cartoesAmarelos;
-    @Column(name = "cartoesVermelhos")
+    @Column(name = "vermelhos")
     private Integer cartoesVermelhos;
-
+    
     public Jogador() {
     }
 
-    public Calendar getDataNascimento() {
-        return dataNascimento;
+    public Calendar getNascimento() {
+        return nascimento;
     }
 
-    public void setDataNascimento(Calendar dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setNascimento(Calendar nascimento) {
+        this.nascimento = nascimento;
     }
 
-    public Integer getPartidasJogadas() {
-        return partidasJogadas;
+    public Integer getNroPartidas() {
+        return nroPartidas;
     }
 
-    public void setPartidasJogadas(Integer partidasJogadas) {
-        this.partidasJogadas = partidasJogadas;
+    public void setNroPartidas(Integer nroPartidas) {
+        this.nroPartidas = nroPartidas;
     }
 
-    public Integer getGolsMarcados() {
-        return golsMarcados;
+    public Integer getNroGols() {
+        return nroGols;
     }
 
-    public void setGolsMarcados(Integer golsMarcados) {
-        this.golsMarcados = golsMarcados;
+    public void setNroGols(Integer nroGols) {
+        this.nroGols = nroGols;
     }
 
     public Integer getCartoesAmarelos() {
@@ -76,5 +79,4 @@ public class Jogador extends Pessoa implements Serializable{
     public void setCartoesVermelhos(Integer cartoesVermelhos) {
         this.cartoesVermelhos = cartoesVermelhos;
     }
-    
 }

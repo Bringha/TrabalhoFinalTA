@@ -6,6 +6,7 @@
 package br.edu.ifsul.testes;
 
 import br.edu.ifsul.modelo.Usuario;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -44,11 +45,14 @@ public class TestePersistirUsuario {
         boolean exception = false;
         try{
             Usuario obj = new Usuario();
-            obj.setNome("Fábio");
+            obj.setNome("Fabio");
             obj.setAtivo(true);
             obj.setApelido("bringha");
-            obj.setSenha("123456");
+            obj.setSenha("12345678");
             obj.setAdministrador(true);
+            em.getTransaction().begin();
+            em.persist(obj);
+            em.getTransaction().commit();
         }catch(Exception e){
             exception = true;
             e.printStackTrace();
