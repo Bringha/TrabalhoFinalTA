@@ -1,19 +1,19 @@
-package br.edu.ifsul.modelo;
-
-
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package br.edu.ifsul.modelo;
+
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -33,7 +33,7 @@ public class Usuario extends Pessoa implements Serializable{
     @NotNull(message = "Deve ser informado se é administrador")
     @Column(name = "administrador", nullable = false)
     private Boolean administrador;
-
+        
     public Usuario() {
     }
 
@@ -60,5 +60,4 @@ public class Usuario extends Pessoa implements Serializable{
     public void setAdministrador(Boolean administrador) {
         this.administrador = administrador;
     }
-    
 }

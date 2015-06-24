@@ -30,12 +30,15 @@ public class Jogador extends Pessoa implements Serializable{
     private Calendar nascimento;
     @Column(name = "nro_partidas")
     private Integer nroPartidas;
-    @Column(name = "nro_gols")
-    private Integer nroGols;
+    @Column(name = "gols")
+    private Integer gols;
     @Column(name = "amarelos")
-    private Integer cartoesAmarelos;
+    private Integer amarelos;
     @Column(name = "vermelhos")
-    private Integer cartoesVermelhos;
+    private Integer vermelhos;
+    @ManyToOne
+    @JoinColumn(name = "time", referencedColumnName = "id", nullable = false)
+    private Time time;
     
     public Jogador() {
     }
@@ -56,27 +59,35 @@ public class Jogador extends Pessoa implements Serializable{
         this.nroPartidas = nroPartidas;
     }
 
-    public Integer getNroGols() {
-        return nroGols;
+    public Integer getGols() {
+        return gols;
     }
 
-    public void setNroGols(Integer nroGols) {
-        this.nroGols = nroGols;
+    public void setGols(Integer gols) {
+        this.gols = gols;
     }
 
-    public Integer getCartoesAmarelos() {
-        return cartoesAmarelos;
+    public Integer getAmarelos() {
+        return amarelos;
     }
 
-    public void setCartoesAmarelos(Integer cartoesAmarelos) {
-        this.cartoesAmarelos = cartoesAmarelos;
+    public void setAmarelos(Integer amarelos) {
+        this.amarelos = amarelos;
     }
 
-    public Integer getCartoesVermelhos() {
-        return cartoesVermelhos;
+    public Integer getVermelhos() {
+        return vermelhos;
     }
 
-    public void setCartoesVermelhos(Integer cartoesVermelhos) {
-        this.cartoesVermelhos = cartoesVermelhos;
+    public void setVermelhos(Integer vermelhos) {
+        this.vermelhos = vermelhos;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
     }
 }

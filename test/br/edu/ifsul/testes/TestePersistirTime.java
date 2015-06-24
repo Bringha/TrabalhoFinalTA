@@ -5,8 +5,8 @@
  */
 package br.edu.ifsul.testes;
 
+import br.edu.ifsul.modelo.Time;
 import br.edu.ifsul.modelo.Usuario;
-import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,12 +20,12 @@ import static org.junit.Assert.*;
  *
  * @author bringha
  */
-public class TestePersistirUsuario {
+public class TestePersistirTime {
     
     EntityManagerFactory emf;
     EntityManager em;
     
-    public TestePersistirUsuario() {
+    public TestePersistirTime() {
     }
     
     @Before
@@ -44,12 +44,8 @@ public class TestePersistirUsuario {
     public void test(){
         boolean exception = false;
         try{
-            Usuario obj = new Usuario();
-            obj.setNome("Fábio Bringhenti");
-            obj.setAtivo(true);
-            obj.setApelido("bringha");
-            obj.setSenha("12345678");
-            obj.setAdministrador(true);
+            Time obj = new Time();
+            obj.setNome("Grêmio");
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();

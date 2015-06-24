@@ -6,7 +6,7 @@
 package br.edu.ifsul.testes;
 
 import br.edu.ifsul.modelo.Jogador;
-import br.edu.ifsul.modelo.Usuario;
+import br.edu.ifsul.modelo.Time;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,13 +46,10 @@ public class TestePersistirJogador {
         boolean exception = false;
         try{
             Jogador obj = new Jogador();
-            obj.setNome("Felipe Bastos");
-            obj.setAtivo(true);
+            obj.setNome("Marcelo Grohe");
             obj.setNascimento(Calendar.getInstance());
-            obj.setNroPartidas(30);
-            obj.setNroGols(1);
-            obj.setCartoesAmarelos(7);
-            obj.setCartoesVermelhos(3);
+            obj.setAtivo(true);
+            obj.setTime(em.find(Time.class, 1));
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();

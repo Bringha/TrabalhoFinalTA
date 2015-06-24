@@ -5,6 +5,8 @@
  */
 package br.edu.ifsul.testes;
 
+import br.edu.ifsul.modelo.AcessoUsuario;
+import br.edu.ifsul.modelo.Pessoa;
 import br.edu.ifsul.modelo.Usuario;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
@@ -20,12 +22,12 @@ import static org.junit.Assert.*;
  *
  * @author bringha
  */
-public class TestePersistirUsuario {
+public class TestePersistirAcessoUsuario {
     
     EntityManagerFactory emf;
     EntityManager em;
     
-    public TestePersistirUsuario() {
+    public TestePersistirAcessoUsuario() {
     }
     
     @Before
@@ -44,12 +46,9 @@ public class TestePersistirUsuario {
     public void test(){
         boolean exception = false;
         try{
-            Usuario obj = new Usuario();
-            obj.setNome("Fábio Bringhenti");
-            obj.setAtivo(true);
-            obj.setApelido("bringha");
-            obj.setSenha("12345678");
-            obj.setAdministrador(true);
+            AcessoUsuario obj = new AcessoUsuario();
+            obj.setPessoa(em.find(Pessoa.class, 1));
+            obj.setDataHora(Calendar.getInstance());
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();
