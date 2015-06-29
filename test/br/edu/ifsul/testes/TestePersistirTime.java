@@ -5,7 +5,7 @@
  */
 package br.edu.ifsul.testes;
 
-import br.edu.ifsul.modelo.Time;
+import br.edu.ifsul.modelo.Times;
 import br.edu.ifsul.modelo.Usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -44,7 +44,7 @@ public class TestePersistirTime {
     public void test(){
         boolean exception = false;
         try{
-            Time obj = new Time();
+            Times obj = new Times();
             obj.setNome("Grêmio");
             em.getTransaction().begin();
             em.persist(obj);

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Acessos de Usuários</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:breadCrumb>
+                    <p:menuitem value="Principal" url="../../" />
+                    <p:menuitem value="Cadastros" url="../interna.xhtml" />
+                    <p:menuitem value="Acessos" url="#" />
+                </p:breadCrumb>
+                <p:growl/>
+                <div align="center">
+                    <p:panelGrid columns="1">
+                        <f:facet name="header">  
+                            Filtro Ordenação e Paginação 
+                        </f:facet>                          
+                        <p:column colspan="13" rowspan="1">     
+                            <h:outputLabel for="ordem" value="Ordem" />     
+                            <h:selectOneMenu id="ordem" 
+                                             value="#{controleAcessoUsuario.dao.currentOrder}"
+                                             converter="#{controleAcessoUsuario.dao.converterOrder}">
+                                <f:selectItems value="#{controleAcessoUsuario.dao.listOrder}" />
+                                <p:ajax update="formListagem" 
+                                        listener="#{controleAcessoUsuario.listar()}"/>
+                            </h:selectOneMenu>                            
+                            <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                            <p:inputText id="maximoObjetos"  
+                                         value="#{controleAcessoUsuario.dao.maxObjects}" size="2"
+                                         onkeydown="Mascara(this, Integer);"
+                                         onkeypress="Mascara(this, Integer);"
+                                         onkeyup="Mascara(this, Integer);">
+                                <p:ajax update="tabela"
+                                        listener="#{controleAcessoUsuario.listar()}" event="keyup"/>                          
+                            </p:inputText>                      
+                            <h:outputLabel for="filtro" value="Filtro" />
+                            <p:inputText id="filtro" placeholder="Digite o filtro"
+                                         value="#{controleAcessoUsuario.dao.filter}" >
+                                <p:ajax update="tabela" 
+                                        listener="#{controleAcessoUsuario.listar()}" event="keyup"/>                            
+                            </p:inputText>
+                            <p:commandButton id="btnFiltrar" update="formListagem" 
+                                             actionListener="#{controleAcessoUsuario.listar()}" icon="ui-icon-search" />  
+                            <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                             actionListener="#{controleAcessoUsuario.dao.first()}" icon="ui-icon-seek-start"/>  
+                            <p:commandButton id="btnAnterior" update="formListagem" 
+                                             actionListener="#{controleAcessoUsuario.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                            <p:commandButton  id="btnProximo" update="formListagem" 
+                                              actionListener="#{controleAcessoUsuario.dao.next()}" icon="ui-icon-seek-next"/>  
+                            <p:commandButton id="btnUltimo" update="formListagem" 
+                                             actionListener="#{controleAcessoUsuario.dao.last()}" icon="ui-icon-seek-end" /> 
+                        </p:column>  
+                    </p:panelGrid>                     
+                </div> 
+                <p:dataTable value="#{controleAcessoUsuario.dao.listObjects}" var="obj"
+                             emptyMessage="Nenhum registro encontrado" id="tabela">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Usuário">
+                        <p:outputLabel value="#{obj.usuario.nome}"/>
+                    </p:column>
+                    <p:column headerText="Data e Hora">
+                        <p:outputLabel value="#{obj.dataHora}">
+                            <f:converter converterId="converterCalendarHora"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{controleAcessoUsuario.dao.navigationMessage}" />
+                    </f:facet>
+                </p:dataTable>
+            </h:form>    
+        </ui:define>
+    </ui:composition>
+</html>

@@ -6,7 +6,7 @@
 package br.edu.ifsul.testes;
 
 import br.edu.ifsul.modelo.Campeonato;
-import br.edu.ifsul.modelo.Time;
+import br.edu.ifsul.modelo.Times;
 import br.edu.ifsul.modelo.Usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

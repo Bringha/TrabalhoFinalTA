@@ -6,7 +6,7 @@
 package br.edu.ifsul.testes;
 
 import br.edu.ifsul.modelo.Jogador;
-import br.edu.ifsul.modelo.Time;
+import br.edu.ifsul.modelo.Times;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -49,7 +49,7 @@ public class TestePersistirJogador {
             obj.setNome("Marcelo Grohe");
             obj.setNascimento(Calendar.getInstance());
             obj.setAtivo(true);
-            obj.setTime(em.find(Time.class, 1));
+            obj.setTime(em.find(Times.class, 1));
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();

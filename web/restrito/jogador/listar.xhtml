@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Manutenção de Jogadores</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:breadCrumb>
+                    <p:menuitem value="Principal" url="../../" />
+                    <p:menuitem value="Cadastros" url="../interna.xhtml" />
+                    <p:menuitem value="Jogadores" url="#" />
+                </p:breadCrumb>
+                <p:growl/>
+                <div align="center">
+                    <p:panelGrid columns="1">
+                        <f:facet name="header">  
+                            Filtro Ordenação e Paginação 
+                        </f:facet>                          
+                        <p:column colspan="13" rowspan="1">     
+                            <p:commandButton actionListener="#{controleJogador.novo()}"
+                                             value="Novo" oncomplete="PF('dlg').show();"
+                                             update=":formEdicao" icon="ui-icon-plus"/>
+                            <h:outputLabel for="ordem" value="Ordem" />     
+                            <h:selectOneMenu id="ordem" 
+                                             value="#{controleJogador.dao.currentOrder}"
+                                             converter="#{controleJogador.dao.converterOrder}">
+                                <f:selectItems value="#{controleJogador.dao.listOrder}" />
+                                <p:ajax update="formListagem" 
+                                        listener="#{controleJogador.listar()}"/>
+                            </h:selectOneMenu>                            
+                            <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                            <p:inputText id="maximoObjetos"  
+                                         value="#{controleJogador.dao.maxObjects}" size="2"
+                                         onkeydown="Mascara(this, Integer);"
+                                         onkeypress="Mascara(this, Integer);"
+                                         onkeyup="Mascara(this, Integer);">
+                                <p:ajax update="tabela"
+                                        listener="#{controleJogador.listar()}" event="keyup"/>                          
+                            </p:inputText>                      
+                            <h:outputLabel for="filtro" value="Filtro" />
+                            <p:inputText id="filtro" placeholder="Digite o filtro"
+                                         value="#{controleJogador.dao.filter}" >
+                                <p:ajax update="tabela" 
+                                        listener="#{controleJogador.listar()}" event="keyup"/>                            
+                            </p:inputText>
+                            <p:commandButton id="btnFiltrar" update="formListagem" 
+                                             actionListener="#{controleJogador.listar()}" icon="ui-icon-search" />  
+                            <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                             actionListener="#{controleJogador.dao.first()}" icon="ui-icon-seek-start"/>  
+                            <p:commandButton id="btnAnterior" update="formListagem" 
+                                             actionListener="#{controleJogador.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                            <p:commandButton  id="btnProximo" update="formListagem" 
+                                              actionListener="#{controleJogador.dao.next()}" icon="ui-icon-seek-next"/>  
+                            <p:commandButton id="btnUltimo" update="formListagem" 
+                                             actionListener="#{controleJogador.dao.last()}" icon="ui-icon-seek-end" /> 
+                        </p:column>  
+                    </p:panelGrid>                     
+                </div> 
+                <p:dataTable value="#{controleJogador.dao.listObjects}" var="obj"
+                             emptyMessage="Nenhum registro encontrado" id="tabela">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
+                    </p:column>
+                    <p:column headerText="Data de Nascimento">
+                        <p:outputLabel value="#{obj.nascimento}">
+                            <f:converter converterId="converterCalendar"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Time">
+                        <p:outputLabel value="#{obj.time.nome}"/>
+                    </p:column>
+                    <p:column headerText="Ativo">
+                        <p:outputLabel value="#{obj.ativo}">
+                            <f:converter converterId="converterSimNao"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton
+                                actionListener="#{controleJogador.editar(obj.id)}"
+                                icon="ui-icon-pencil"
+                                update=":formEdicao"
+                                oncomplete="PF('dlg').show();"/>
+                            <p:commandButton
+                                actionListener="#{controleJogador.remover(obj.id)}"
+                                icon="ui-icon-trash"
+                                update=":formListagem"
+                                onclick="if(!confirm('Confirma a exclusão do objeto?')) return false;"/>
+                        </div>
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{controleJogador.dao.navigationMessage}" />
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+            
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true">
+                <h:form id="formEdicao">
+                    <p:panelGrid columns="4">
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton
+                                    value="Salvar"
+                                    icon="ui-icon-disk"
+                                    actionListener="#{controleJogador.salvar()}"
+                                    update=":formListagem :formEdicao"
+                                    oncomplete="if(!args.validationFailed){PF('dlg').hide();}"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="Jogador" for="txtJogador" />
+                        <p:inputText id="txtJogador" value="#{controleJogador.objeto.nome}"/>
+                        <p:outputLabel value="Data de Nascimento" for="txtNascimento"/>
+                        <p:calendar value="#{controleJogador.objeto.nascimento}"                                  locale="pt_BR" navigator="true" showButtonPanel="true"
+                                    id="txtNascimento" pattern="dd/MM/yyyy"
+                                    mask="true">
+                            <f:converter converterId="converterCalendar"/>
+                        </p:calendar>
+                        <p:outputLabel value="Time" for="txtTime" />
+                        <p:selectOneMenu value="#{controleJogador.objeto.time}"
+                                         id="txtTime">
+                            <f:converter converterId="converterTimes"/>
+                            <f:selectItem noSelectionOption="true"
+                                          itemLabel="Selecione um registro"/>
+                            <f:selectItems value="#{controleJogador.daoTime.listObjects}"
+                                           var="t" itemLabel="#{t.nome}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Partidas" for="txtPartidas" />
+                        <p:inputText id="txtPartidas" value="#{controleJogador.objeto.nroPartidas}"/>
+                        <p:outputLabel value="Gols" for="txtGols" />
+                        <p:inputText id="txtGols" value="#{controleJogador.objeto.gols}"/>
+                        <p:outputLabel value="Amarelos" for="txtAmarelos" />
+                        <p:inputText id="txtAmarelos" value="#{controleJogador.objeto.amarelos}"/>
+                        <p:outputLabel value="Vermelhos" for="txtVermelhos" />
+                        <p:inputText id="txtVermelhos" value="#{controleJogador.objeto.vermelhos}"/>
+                        <p:outputLabel value="Ativo" for="txtAtivo"/>
+                        <p:selectBooleanCheckbox value="#{controleJogador.objeto.ativo}"
+                                                 id="txtAtivo"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

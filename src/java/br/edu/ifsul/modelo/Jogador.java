@@ -36,9 +36,10 @@ public class Jogador extends Pessoa implements Serializable{
     private Integer amarelos;
     @Column(name = "vermelhos")
     private Integer vermelhos;
+    @NotNull(message = "O time deve ser informado")
     @ManyToOne
     @JoinColumn(name = "time", referencedColumnName = "id", nullable = false)
-    private Time time;
+    private Times time;
     
     public Jogador() {
     }
@@ -83,11 +84,11 @@ public class Jogador extends Pessoa implements Serializable{
         this.vermelhos = vermelhos;
     }
 
-    public Time getTime() {
+    public Times getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(Times time) {
         this.time = time;
     }
 }

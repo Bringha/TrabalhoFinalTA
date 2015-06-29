@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Manutenção de Campeonatos</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:breadCrumb>
+                    <p:menuitem value="Principal" url="../../" />
+                    <p:menuitem value="Cadastros" url="../interna.xhtml" />
+                    <p:menuitem value="Campeonatos" url="#" />
+                </p:breadCrumb>
+                <p:growl/>
+                <div align="center">
+                    <p:panelGrid columns="1">
+                        <f:facet name="header">  
+                            Filtro Ordenação e Paginação 
+                        </f:facet>                          
+                        <p:column colspan="13" rowspan="1">     
+                            <p:commandButton actionListener="#{controleCampeonato.novo()}"
+                                             value="Novo" oncomplete="PF('dlg').show();"
+                                             update=":formEdicao" icon="ui-icon-plus"/>
+                            <h:outputLabel for="ordem" value="Ordem" />     
+                            <h:selectOneMenu id="ordem" 
+                                             value="#{controleCampeonato.dao.currentOrder}"
+                                             converter="#{controleCampeonato.dao.converterOrder}">
+                                <f:selectItems value="#{controleCampeonato.dao.listOrder}" />
+                                <p:ajax update="formListagem" 
+                                        listener="#{controleCampeonato.listar()}"/>
+                            </h:selectOneMenu>                            
+                            <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                            <p:inputText id="maximoObjetos"  
+                                         value="#{controleCampeonato.dao.maxObjects}" size="2"
+                                         onkeydown="Mascara(this, Integer);"
+                                         onkeypress="Mascara(this, Integer);"
+                                         onkeyup="Mascara(this, Integer);">
+                                <p:ajax update="tabela"
+                                        listener="#{controleCampeonato.listar()}" event="keyup"/>                          
+                            </p:inputText>                      
+                            <h:outputLabel for="filtro" value="Filtro" />
+                            <p:inputText id="filtro" placeholder="Digite o filtro"
+                                         value="#{controleCampeonato.dao.filter}" >
+                                <p:ajax update="tabela" 
+                                        listener="#{controleCampeonato.listar()}" event="keyup"/>                            
+                            </p:inputText>
+                            <p:commandButton id="btnFiltrar" update="formListagem" 
+                                             actionListener="#{controleCampeonato.listar()}" icon="ui-icon-search" />  
+                            <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                             actionListener="#{controleCampeonato.dao.first()}" icon="ui-icon-seek-start"/>  
+                            <p:commandButton id="btnAnterior" update="formListagem" 
+                                             actionListener="#{controleCampeonato.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                            <p:commandButton  id="btnProximo" update="formListagem" 
+                                              actionListener="#{controleCampeonato.dao.next()}" icon="ui-icon-seek-next"/>  
+                            <p:commandButton id="btnUltimo" update="formListagem" 
+                                             actionListener="#{controleCampeonato.dao.last()}" icon="ui-icon-seek-end" /> 
+                        </p:column>  
+                    </p:panelGrid>                     
+                </div> 
+                <p:dataTable value="#{controleCampeonato.dao.listObjects}" var="obj"
+                             emptyMessage="Nenhum registro encontrado" id="tabela">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
+                    </p:column>
+                    <p:column headerText="Campeão">
+                        <p:outputLabel value="#{obj.campeao}"/>
+                    </p:column>
+                    <p:column headerText="Vice-Campeão">
+                        <p:outputLabel value="#{obj.vice}"/>
+                    </p:column>
+                    <p:column headerText="Prêmio">
+                        <p:outputLabel value="#{obj.premio}">
+                            <f:convertNumber pattern="R$ #,###.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton
+                                actionListener="#{controleCampeonato.editar(obj.id)}"
+                                icon="ui-icon-pencil"
+                                update=":formEdicao"
+                                oncomplete="PF('dlg').show();"/>
+                            <p:commandButton
+                                actionListener="#{controleCampeonato.remover(obj.id)}"
+                                icon="ui-icon-trash"
+                                update=":formListagem"
+                                onclick="if(!confirm('Confirma a exclusão do objeto?')) return false;"/>
+                        </div>
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{controleCampeonato.dao.navigationMessage}" />
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+            
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true">
+                <h:form id="formEdicao">
+                    <p:panelGrid columns="4">
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton
+                                    value="Salvar"
+                                    icon="ui-icon-disk"
+                                    actionListener="#{controleCampeonato.salvar()}"
+                                    update=":formListagem :formEdicao"
+                                    oncomplete="if(!args.validationFailed){PF('dlg').hide();}"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="Campeonato" for="txtCampeonato" />
+                        <p:inputText id="txtCampeonato" value="#{controleCampeonato.objeto.nome}"/>
+                        <p:outputLabel value="Campeão" for="txtCampeao" />
+                        <p:inputText id="txtCampeao" value="#{controleCampeonato.objeto.campeao}"/>
+                        <p:outputLabel value="Vice-Campeão" for="txtVice" />
+                        <p:inputText id="txtVice" value="#{controleCampeonato.objeto.vice}"/>
+                        <p:outputLabel value="Prêmio" for="txtPremio" />
+                        <p:inputText id="txtPremio" value="#{controleCampeonato.objeto.premio}"/>
+                        <p:outputLabel value="Artilheiro" for="txtArtilheiro" />
+                        <p:inputText id="txtArtilheiro" value="#{controleCampeonato.objeto.artilheiro}"/>
+                        <p:outputLabel value="Usuário" for="txtUsuario" />
+                        <p:selectOneMenu value="#{controleCampeonato.objeto.usuario}"
+                                         id="txtUsuario">
+                            <f:converter converterId="converterUsuario"/>
+                            <f:selectItem noSelectionOption="true"
+                                          itemLabel="Selecione um registro"/>
+                            <f:selectItems value="#{controleCampeonato.daoUsuario.listObjects}"
+                                           var="t" itemLabel="#{t.nome}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

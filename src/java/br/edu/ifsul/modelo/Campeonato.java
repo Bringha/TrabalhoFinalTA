@@ -43,10 +43,10 @@ public class Campeonato implements Serializable{
     private Usuario usuario;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "campeao")
-    private Time campeao;
+    private Times campeao;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vice")
-    private Time vice;
+    private Times vice;
     @NotNull(message = "O prêmio deve ser informado")
     @Column(name = "premio", columnDefinition = "decimal(12,2)", nullable = false)
     private Double premio;
@@ -73,19 +73,19 @@ public class Campeonato implements Serializable{
         this.nome = nome;
     }
 
-    public Time getCampeao() {
+    public Times getCampeao() {
         return campeao;
     }
 
-    public void setCampeao(Time campeao) {
+    public void setCampeao(Times campeao) {
         this.campeao = campeao;
     }
 
-    public Time getVice() {
+    public Times getVice() {
         return vice;
     }
 
-    public void setVice(Time vice) {
+    public void setVice(Times vice) {
         this.vice = vice;
     }
 

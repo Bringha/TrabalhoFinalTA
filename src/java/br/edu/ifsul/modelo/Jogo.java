@@ -40,7 +40,7 @@ public class Jogo implements Serializable {
     @NotEmpty(message = "O estadio deve ser informado")
     @Column(name = "estadio", length = 50, nullable = false)
     private String estadio;
-    @NotNull(message = "A data e hora devem ser informadas")
+    @NotNull(message = "A data devem ser informadas")
     @Temporal(TemporalType.DATE)
     @Column(name = "dataHora", nullable = false)
     private Calendar dataHora;
@@ -66,7 +66,7 @@ public class Jogo implements Serializable {
             @JoinColumn(name = "jogo",referencedColumnName = "id"),
             inverseJoinColumns = 
             @JoinColumn(name = "time", referencedColumnName = "id"))
-    private List<Time> jogam = new ArrayList<>();
+    private List<Times> jogam = new ArrayList<>();
     public Jogo() {
     }
 
@@ -126,11 +126,11 @@ public class Jogo implements Serializable {
         this.campeonato = campeonato;
     }
 
-    public List<Time> getJogam() {
+    public List<Times> getJogam() {
         return jogam;
     }
 
-    public void setJogam(List<Time> jogam) {
+    public void setJogam(List<Times> jogam) {
         this.jogam = jogam;
     }
 

@@ -27,7 +27,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "time")
-public class Time implements Serializable{
+public class Times implements Serializable{
     @Id
     @Column(name = "id")
     @SequenceGenerator(name = "seq_id_time", sequenceName = "seq_time_id", allocationSize = 1)
@@ -55,7 +55,7 @@ public class Time implements Serializable{
             @JoinColumn(name = "jogo", referencedColumnName = "id"))
     private List<Jogo> jogos = new ArrayList<>();
 
-    public Time() {
+    public Times() {
     }
 
     public Integer getId() {
